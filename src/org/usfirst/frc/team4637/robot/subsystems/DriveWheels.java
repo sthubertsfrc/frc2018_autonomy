@@ -46,6 +46,9 @@ public class DriveWheels extends Subsystem {
 	double initialAngle = 0.0;
 	double initialPos = 0.0;
 	
+	double posErr = 0.0;
+	double angleErr = 0.0;
+	
 	public DriveWheels()
 	{
 		super("DriveWheels");
@@ -101,17 +104,22 @@ public class DriveWheels extends Subsystem {
 	public void doFeedbackLoop()
 	{
 		updateMeasurements();
-		double posErr = refTotalDist - currentPos;
+		double posErr = refTotalDist - (currentPos - initialPos);
 		// TODO handle divide by zero
-		double angleErr = refTotalAngle - currentAngle;
+		double angleErr = refTotalAngle - (currentAngle - initialAngle);
 		moveOpenLoop(posErr * 0.04, angleErr * 0.02, false);
 	}
 	
-	public void startClosedLoop(double totalDist, double totalAngle)
+	public boolean atTarget(double posTol, double angleTol_deg)
+	{
+		return Math.abs(posErr) < posTol && Math.abs(angleErr) < angleTol_deg  * Math.PI / 180.0; 
+	}
+	
+	public void startClosedLoop(double totalDist, double totalAngle_deg)
 	{
 		initialPos = currentPos;
 		initialAngle = currentAngle;
-		refTotalAngle = totalAngle;
+		refTotalAngle = totalAngle_deg * Math.PI / 180.0;
 		refTotalDist = totalDist;
 	}
 	
@@ -125,7 +133,7 @@ public class DriveWheels extends Subsystem {
 	}
 	
 	public void stop() {
-		moveOpenLoop(0.0, 0.0, true);
+		moveOpenLoop(0.0, 0.0, false);
 	}
 
 	@Override

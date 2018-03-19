@@ -13,8 +13,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4637.robot.commands.ExampleCommand;
+import org.usfirst.frc.team4637.robot.subsystems.ArmAngleController;
 import org.usfirst.frc.team4637.robot.subsystems.DriveWheels;
 import org.usfirst.frc.team4637.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team4637.robot.subsystems.Grabber;
+import org.usfirst.frc.team4637.robot.subsystems.ShooterArm;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,6 +31,9 @@ public class Robot extends TimedRobot {
 	
 	// Robot subsystems
 	public static DriveWheels m_driveWheels = new DriveWheels();
+	public static ShooterArm m_shooter = new ShooterArm(8, 9, 1, 2, 3);
+	public static ArmAngleController positioner = new ArmAngleController(4, 8, 9);
+	public static Grabber m_grabber = new Grabber(0, 1, 7, 6);
 	
 	// Control framework for Joystick input
 	public static OI m_oi;
@@ -107,6 +113,14 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		
+		// Flip sign on Y axis so that forward on the stick is actually forward
+		// Reduce the sensitivity slightly of drive input from stick
+		m_driveWheels.moveOpenLoop(m_oi.rightStick.getX()*.8, -m_oi.rightStick.getY()*.9, true);
+		
+		handleArmControl(m_oi.leftStick.getY(), m_oi.autoRaiseBtn.get());
+		
+		
 	}
 
 	/**
@@ -123,4 +137,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 	}
+	
+	private void handleArmControl(double armLiftVel, boolean auto_lift_active) {
+		// Handle arm positioning (throttle arm motor based on left joystick Y axis)
+
+		// Check if fast-positioning button is depressed, and override joystick input with maximum speed
+		if (auto_lift_active == true){
+			armLiftVel = 1.0;
+		}
+
+		SmartDashboard.putNumber("Arm Speed", armLiftVel);
+		positioner.updateMotorSpeed(armLiftVel);
+	}
+	
 }
