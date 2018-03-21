@@ -3,6 +3,8 @@ package org.usfirst.frc.team4637.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.usfirst.frc.team4637.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
@@ -29,12 +31,12 @@ public class Shooter extends Subsystem {
 
 	ReentrantLock mutex;
 
-	public Shooter(int talonPort1, int talonPort2, int switchPort, int clutchForwardPort, int clutchReversePort) {
-		limitSwitch = new DigitalInput(switchPort); 
-		shooterTalon1 = new PWMTalonSRX(talonPort1);
-		shooterTalon2 = new PWMTalonSRX(talonPort2);
+	public Shooter() {
+		limitSwitch = new DigitalInput(RobotMap.shooterLimitSwitchPort); 
+		shooterTalon1 = new PWMTalonSRX(RobotMap.shooterMotor1Port);
+		shooterTalon2 = new PWMTalonSRX(RobotMap.shooterMotor2Port);
 		winch = new SpeedControllerGroup(shooterTalon1, shooterTalon2);
-		triggerClutch = new DoubleSolenoid(clutchForwardPort, clutchReversePort);
+		triggerClutch = new DoubleSolenoid(RobotMap.shooterSolenoidFwPort, RobotMap.shooterSolenoidRevPort);
 	}
 
 	public void engageShooterClutch() {

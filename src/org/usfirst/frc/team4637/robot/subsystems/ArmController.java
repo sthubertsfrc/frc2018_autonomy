@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team4637.robot.RobotMap;
 import org.usfirst.frc.team4637.robot.commands.ControlArmAngleWithJoystick;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -18,7 +19,7 @@ public class ArmController extends Subsystem{
 	double downSpeedGain;
 	double armUpDirection;
 
-	public ArmController (int talonPort, int lowerLimitPort, int upperLimitPort){
+	public ArmController(){
 		super("ArmController");// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
 		
 		// NOTE These gains MUST be between 0.0 and 1.0
@@ -27,10 +28,11 @@ public class ArmController extends Subsystem{
 		
 		armUpDirection = -1.0;
 		
-		positionMotor = new Spark (talonPort);
-		lowerLimit = new DigitalInput(lowerLimitPort);
+		positionMotor = new Spark (RobotMap.armMotorPort);
+
+		lowerLimit = new DigitalInput(RobotMap.armLowerLimitSwitchPort);
 		// TODO replace with analog input
-		upperLimit = new DigitalInput(upperLimitPort);
+		upperLimit = new DigitalInput(RobotMap.armUpperLimitSwitchPort);
 	}
 	
 	public int inLimits(){

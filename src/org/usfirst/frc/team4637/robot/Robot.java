@@ -40,10 +40,10 @@ public class Robot extends TimedRobot {
 	
 	// Robot subsystems
 	public static DriveWheels m_driveWheels = new DriveWheels();
-	public static Shooter m_shooter = new Shooter(8, 9, 1, 2, 3);
-	public static ArmController m_armController = new ArmController(4, 8, 9);
-	public static Grabber m_grabber = new Grabber(0, 1, 7, 6);
-	public static HookArm m_hookArm = new HookArm(6, 7);
+	public static Shooter m_shooter = new Shooter();
+	public static ArmController m_armController = new ArmController();
+	public static Grabber m_grabber = new Grabber();
+	public static HookArm m_hookArm = new HookArm();
 	
 	// Control framework for Joystick input
 	public static OI m_oi;

@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4637.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+
+import org.usfirst.frc.team4637.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
@@ -19,10 +22,10 @@ public class Grabber extends Subsystem {
 	double intakeSpeed;
 	double outtakeSpeed;
 	
-	public Grabber (int grabberForwardPort, int grabberReversePort, int leftPort, int rightPort){
-		grabberSolenoid = new DoubleSolenoid(grabberForwardPort, grabberReversePort);
-		leftVictor = new PWMVictorSPX (leftPort);
-		rightVictor = new PWMVictorSPX (rightPort);
+	public Grabber (){
+		grabberSolenoid = new DoubleSolenoid(RobotMap.grabberSolenoidFwdPort, RobotMap.grabberSolenoidRevPort);
+		leftVictor = new PWMVictorSPX(RobotMap.grabberLeftMotorPort);
+		rightVictor = new PWMVictorSPX(RobotMap.grabberRightMotorPort);
 		intakeSpeed = 1.0;
 		outtakeSpeed = 1.0;
 		compressor = new Compressor();

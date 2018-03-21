@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4637.robot.subsystems;
 
+import org.usfirst.frc.team4637.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -11,9 +13,9 @@ public class HookArm extends Subsystem {
 	
 	private DoubleSolenoid hookSolenoid;
 	
-    public HookArm(int extendPort, int retractPort)
+    public HookArm()
     {
-    	hookSolenoid = new DoubleSolenoid(extendPort, retractPort);
+    	hookSolenoid = new DoubleSolenoid(RobotMap.hookSolenoidFwdPort, RobotMap.hookSolenoidRevPort);
     }
     
     public void extend()
