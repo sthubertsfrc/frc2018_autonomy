@@ -59,7 +59,6 @@ public class DriveWheels extends Subsystem {
 		double distancePerPulse = wheelDiameter * Math.PI / (double)encoderPPR;
 		leftEncoder.setDistancePerPulse(distancePerPulse);
 		rightEncoder.setDistancePerPulse(distancePerPulse);
-		
 	}
 	
 	public void updateMeasurements()

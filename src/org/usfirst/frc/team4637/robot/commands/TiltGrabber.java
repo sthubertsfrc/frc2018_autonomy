@@ -9,30 +9,20 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class TiltGrabber extends Command {
-	public enum GrabberAngle
-	{
-		ALIGN_WITH_GROUND,
-		ALIGN_TO_SHOOTER
-	}
 	
-	GrabberAngle goalAngle;
+	boolean toShootPos;
 	
-    public TiltGrabber(GrabberAngle goal_angle) {
+    public TiltGrabber(boolean to_shoot_pos) {
     	requires(Robot.m_grabber);
-    	goalAngle = goal_angle;
+    	toShootPos = to_shoot_pos;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	switch (goalAngle) {
-    	case ALIGN_WITH_GROUND:
-    		Robot.m_grabber.tiltToGrabPos();
-    		break;
-    	case ALIGN_TO_SHOOTER:
+    	if (toShootPos) {
     		Robot.m_grabber.tiltToShootPos();
-    		break;
-    	default:
-    		break;
+    	} else {
+       		Robot.m_grabber.tiltToGrabPos();
     	}
     }
 

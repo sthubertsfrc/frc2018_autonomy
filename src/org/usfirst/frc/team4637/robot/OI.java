@@ -33,6 +33,9 @@ public class OI {
 	Button armShooterBtn = new JoystickButton(leftStick, 1);
 	Button shootBtn = new JoystickButton(rightStick, 1);
 	
+	Button extendHookBtn = new JoystickButton(rightStick, 2);
+	Button retractHookBtn = new JoystickButton(rightStick, 3);
+	
 	public double getForwardSpeedCmd()
 	{
 		return -rightStick.getY() * 0.9;

@@ -48,6 +48,6 @@ public class Grabber extends Subsystem {
 
 	}
 	@Override
-	protected void initDefaultCommand() {		
+	protected void initDefaultCommand() {
 	}
 }

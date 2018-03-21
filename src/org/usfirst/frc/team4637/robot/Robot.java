@@ -12,9 +12,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team4637.robot.commands.ArmShooterSequence;
+import org.usfirst.frc.team4637.robot.commands.EjectBox;
+import org.usfirst.frc.team4637.robot.commands.ExtendHook;
+import org.usfirst.frc.team4637.robot.commands.RaiseArmToLimit;
+import org.usfirst.frc.team4637.robot.commands.RetractHook;
+import org.usfirst.frc.team4637.robot.commands.Shoot;
+import org.usfirst.frc.team4637.robot.commands.TakeBox;
+import org.usfirst.frc.team4637.robot.commands.TiltGrabber;
 import org.usfirst.frc.team4637.robot.subsystems.ArmController;
 import org.usfirst.frc.team4637.robot.subsystems.DriveWheels;
 import org.usfirst.frc.team4637.robot.subsystems.Grabber;
+import org.usfirst.frc.team4637.robot.subsystems.HookArm;
 import org.usfirst.frc.team4637.robot.subsystems.Shooter;
 
 /**
@@ -31,6 +41,7 @@ public class Robot extends TimedRobot {
 	public static Shooter m_shooter = new Shooter(8, 9, 1, 2, 3);
 	public static ArmController m_armController = new ArmController(4, 8, 9);
 	public static Grabber m_grabber = new Grabber(0, 1, 7, 6);
+	public static HookArm m_hookArm = new HookArm(6, 7);
 	
 	// Control framework for Joystick input
 	public static OI m_oi;
@@ -110,7 +121,20 @@ public class Robot extends TimedRobot {
 			m_autonomousCommand.cancel();
 		}
 		
+		m_oi.autoRaiseBtn.whenPressed(new RaiseArmToLimit());		
+		m_oi.armShooterBtn.whenPressed(new ArmShooterSequence());
+		m_oi.shootBtn.whenPressed(new Shoot());
 		
+		m_oi.intakeBtn.whileHeld(new TakeBox());
+		m_oi.ejectBtn.whileHeld(new EjectBox());
+		m_oi.tiltToGrabBtn.whenPressed(new TiltGrabber(true));
+		m_oi.tiltToShootBtn.whenPressed(new TiltGrabber(false));
+		
+		m_oi.extendHookBtn.whenPressed(new ExtendHook());
+		m_oi.retractHookBtn.whenPressed(new RetractHook());
+		
+		// Right joystick controls drive wheels by default in teleop mode (see default command in DriveWheels.java) 
+		// Left joystick Y axis controls arm angle by default in teleop mode (see default command in ArmController.java)
 	}
 
 	/**
@@ -120,18 +144,6 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		handleArmControl(m_oi.leftStick.getY(), m_oi.autoRaiseBtn.get());
-
-		// Push grabber Piston Out
-		if (m_oi.tiltToShootBtn.get()){
-			m_grabber.tiltToShootPos();
-		}
-
-		// Pull grabber piston in
-		if (m_oi.tiltToGrabBtn.get()){
-			m_grabber.tiltToGrabPos();
-		}
-
 		// TODO move these to commands
 		// Arm shooter
 		// Extend the hook
