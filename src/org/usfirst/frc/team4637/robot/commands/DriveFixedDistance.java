@@ -6,23 +6,21 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class DriveToPosAngle extends Command {
+public class DriveFixedDistance extends Command {
 
-	double deltaPos = 0.0;
-	double deltaAngle_deg = 0.0;
+	double cmdDistance = 0.0;
 	
-	public DriveToPosAngle(double setPos, double setAngle_deg) {
+	public DriveFixedDistance(double distance) {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.m_driveWheels);
 		setTimeout(20.0); // For safety
 		
-		deltaPos = setPos;
-		deltaAngle_deg = setAngle_deg;
+		cmdDistance = distance;
 	}
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.m_driveWheels.startClosedLoop(deltaPos, deltaAngle_deg);
+    	Robot.m_driveWheels.startClosedLoop(cmdDistance, 0.0);
     }
 
     // Called repeatedly when this Command is scheduled to run

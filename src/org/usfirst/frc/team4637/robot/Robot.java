@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4637.robot.commands.ArmShooterSequence;
-import org.usfirst.frc.team4637.robot.commands.DriveToLeftSwitchSequence;
+import org.usfirst.frc.team4637.robot.commands.DriveToSameSideSwitchOuter;
 import org.usfirst.frc.team4637.robot.commands.DriveToRightSwitchSequence;
 import org.usfirst.frc.team4637.robot.commands.EjectBox;
 import org.usfirst.frc.team4637.robot.commands.ExtendHook;
@@ -58,7 +58,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		m_chooser.addObject("My Auto", new DriveToLeftSwitchSequence());
+		m_chooser.addObject("Drive to switch on left side (to end of switch)", new DriveToSameSideSwitchOuter(true));
+		m_chooser.addObject("Drive to switch on left side (side of switch)", new DriveToSameSideSwitchOuter(true));
+		m_chooser.addObject("Drive to switch on right side (to end of switch)", new DriveToSameSideSwitchOuter(false));
+		m_chooser.addObject("Drive to switch on right side (side of switch)", new DriveToSameSideSwitchOuter(false));
 		m_chooser.addObject("My Auto", new DriveToRightSwitchSequence());
 		// TODO decide if this is necessary
 		SmartDashboard.putData("Auto mode", m_chooser);

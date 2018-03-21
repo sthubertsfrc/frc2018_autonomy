@@ -22,7 +22,7 @@ public class DriveWithJoystick extends Command {
      * (for example, if we want the joysticks to be less sensitive, we can multiply them by .5 in the getLeftSpeed method and leave our command the same).
      */
     protected void execute() {
-    	Robot.m_driveWheels.moveOpenLoop(Robot.m_oi.getTurnRateCmd(), Robot.m_oi.getForwardSpeedCmd(), true);
+    	Robot.m_driveWheels.moveOpenLoop(Robot.m_oi.getForwardSpeedCmd(), Robot.m_oi.getTurnRateCmd(), true);
     }
 
     /*
