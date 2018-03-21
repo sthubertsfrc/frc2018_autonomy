@@ -16,14 +16,37 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	//// CREATING BUTTONS
-	// One type of button is a joystick button which is any button on a
-	//// joystick.
-	// You create one by telling it which joystick it's on and which button
-	// number it is.
+
+	// Define buttons / joysticks and map them to various functions
+	// This approach makes it easy to see what button is assigned to what job
 	Joystick leftStick = new Joystick(0);
 	Joystick rightStick = new Joystick(1);
 	Button autoRaiseBtn = new JoystickButton(leftStick, 4);
+	
+	Button intakeBtn = new JoystickButton(leftStick, 2);
+	Button ejectBtn = new JoystickButton(leftStick, 3);
+	
+	Button tiltToShootBtn = new JoystickButton(rightStick, 8);
+	Button tiltToGrabBtn = new JoystickButton(rightStick, 9);
+	
+	// TODO pick hook buttons
+	Button armShooterBtn = new JoystickButton(leftStick, 1);
+	Button shootBtn = new JoystickButton(rightStick, 1);
+	
+	public double getForwardSpeedCmd()
+	{
+		return -rightStick.getY() * 0.9;
+	}
+	
+	public double getTurnRateCmd()
+	{
+		return rightStick.getX() * 0.8;
+	}
+	
+	public double getArmSpeedCmd()
+	{
+		return leftStick.getY();
+	}
 	
 	// Button button = new JoystickButton(stick, buttonNumber);
 

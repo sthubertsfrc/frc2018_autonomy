@@ -28,34 +28,26 @@ public class Grabber extends Subsystem {
 		compressor = new Compressor();
 	}
 
-	public void outtake(){
-		leftVictor.set(outtakeSpeed);
-		rightVictor.set(-outtakeSpeed);
-	}
-	public void intake() {
-		leftVictor.set(-intakeSpeed);
-		rightVictor.set(intakeSpeed);
-	}
-	public void spin() {
-		leftVictor.set(-intakeSpeed * 0.5);
-		rightVictor.set(intakeSpeed);
+	/**
+	 * @param speed positive = grab, negative = eject
+	 */
+	public void spinMotorsAtSpeed(double speed){
+		leftVictor.set(speed);
+		rightVictor.set(-speed);
 	}
 	public void stop(){
-		leftVictor.set(0);
-		rightVictor.set(0);
+		spinMotorsAtSpeed(0.0);
 	}
 
-	public void pushOut1(){
+	public void tiltToShootPos(){
 		grabberSolenoid.set(DoubleSolenoid.Value.kForward);
 
 	}
-	public void pullIn1(){
+	public void tiltToGrabPos(){
 		grabberSolenoid.set(DoubleSolenoid.Value.kReverse);
 
 	}
 	@Override
-	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+	protected void initDefaultCommand() {		
 	}
 }

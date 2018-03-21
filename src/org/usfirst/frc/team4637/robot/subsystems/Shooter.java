@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 /**
  *
  */
-public class ShooterArm extends Subsystem {
+public class Shooter extends Subsystem {
 
 	// Two motors used to drive the winch 
 	private PWMTalonSRX shooterTalon1;
@@ -29,7 +29,7 @@ public class ShooterArm extends Subsystem {
 
 	ReentrantLock mutex;
 
-	public ShooterArm(int talonPort1, int talonPort2, int switchPort, int clutchForwardPort, int clutchReversePort) {
+	public Shooter(int talonPort1, int talonPort2, int switchPort, int clutchForwardPort, int clutchReversePort) {
 		limitSwitch = new DigitalInput(switchPort); 
 		shooterTalon1 = new PWMTalonSRX(talonPort1);
 		shooterTalon2 = new PWMTalonSRX(talonPort2);
@@ -37,26 +37,26 @@ public class ShooterArm extends Subsystem {
 		triggerClutch = new DoubleSolenoid(clutchForwardPort, clutchReversePort);
 	}
 
-	public void armShooterClutch() {
+	public void engageShooterClutch() {
 		triggerClutch.set(DoubleSolenoid.Value.kForward);
 	}
 
-	public void releaseShooterClutch() throws InterruptedException {
+	public void releaseShooterClutch() {
 		triggerClutch.set(DoubleSolenoid.Value.kReverse);
 	}
 
-	public void setWinchSpeed(double speed) throws InterruptedException {
+	public void setWinchSpeed(double speed) {
 		winch.set(speed);
 	}
 
-	public boolean limitSwitchTest(){
+	// TODO fix for analog input
+	public boolean atLimitSwitch(){
 		boolean isSwitchPushed = !limitSwitch.get(); // 5V connected to NC so it's true by default, false when switch is closed
 		return isSwitchPushed;
 	}
 
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+		// By default do nothing
 	}
 }

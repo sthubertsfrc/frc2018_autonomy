@@ -3,9 +3,12 @@ package org.usfirst.frc.team4637.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team4637.robot.commands.ControlArmAngleWithJoystick;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 
-public class ArmAngleController extends Subsystem{
+public class ArmController extends Subsystem{
 	Spark positionMotor;
 	DigitalInput lowerLimit;
 	DigitalInput upperLimit;
@@ -15,8 +18,8 @@ public class ArmAngleController extends Subsystem{
 	double downSpeedGain;
 	double armUpDirection;
 
-	public ArmAngleController (int talonPort, int lowerLimitPort, int upperLimitPort){
-		super("ArmAngleController");// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
+	public ArmController (int talonPort, int lowerLimitPort, int upperLimitPort){
+		super("ArmController");// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
 		
 		// NOTE These gains MUST be between 0.0 and 1.0
 		upSpeedGain = 0.8;
@@ -92,8 +95,7 @@ public class ArmAngleController extends Subsystem{
 
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+		setDefaultCommand(new ControlArmAngleWithJoystick());
 	}
 	
 }

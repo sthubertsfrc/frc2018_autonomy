@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4637.robot.subsystems;
 
+import org.usfirst.frc.team4637.robot.commands.DriveWithJoystick;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -138,8 +140,8 @@ public class DriveWheels extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+		// Unless otherwise specified, give the operator control of the robot
+		setDefaultCommand(new DriveWithJoystick());
 	}
 }
 

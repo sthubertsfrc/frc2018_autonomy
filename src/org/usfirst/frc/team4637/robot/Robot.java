@@ -12,12 +12,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4637.robot.commands.ExampleCommand;
-import org.usfirst.frc.team4637.robot.subsystems.ArmAngleController;
+import org.usfirst.frc.team4637.robot.subsystems.ArmController;
 import org.usfirst.frc.team4637.robot.subsystems.DriveWheels;
-import org.usfirst.frc.team4637.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4637.robot.subsystems.Grabber;
-import org.usfirst.frc.team4637.robot.subsystems.ShooterArm;
+import org.usfirst.frc.team4637.robot.subsystems.Shooter;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,12 +25,11 @@ import org.usfirst.frc.team4637.robot.subsystems.ShooterArm;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
 	
 	// Robot subsystems
 	public static DriveWheels m_driveWheels = new DriveWheels();
-	public static ShooterArm m_shooter = new ShooterArm(8, 9, 1, 2, 3);
-	public static ArmAngleController positioner = new ArmAngleController(4, 8, 9);
+	public static Shooter m_shooter = new Shooter(8, 9, 1, 2, 3);
+	public static ArmController m_armController = new ArmController(4, 8, 9);
 	public static Grabber m_grabber = new Grabber(0, 1, 7, 6);
 	
 	// Control framework for Joystick input
@@ -48,7 +45,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
@@ -114,12 +110,6 @@ public class Robot extends TimedRobot {
 			m_autonomousCommand.cancel();
 		}
 		
-		// Flip sign on Y axis so that forward on the stick is actually forward
-		// Reduce the sensitivity slightly of drive input from stick
-		m_driveWheels.moveOpenLoop(m_oi.rightStick.getX()*.8, -m_oi.rightStick.getY()*.9, true);
-		
-		handleArmControl(m_oi.leftStick.getY(), m_oi.autoRaiseBtn.get());
-		
 		
 	}
 
@@ -129,6 +119,32 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+		handleArmControl(m_oi.leftStick.getY(), m_oi.autoRaiseBtn.get());
+
+		// Push grabber Piston Out
+		if (m_oi.tiltToShootBtn.get()){
+			m_grabber.tiltToShootPos();
+		}
+
+		// Pull grabber piston in
+		if (m_oi.tiltToGrabBtn.get()){
+			m_grabber.tiltToGrabPos();
+		}
+
+		// TODO move these to commands
+		// Arm shooter
+		// Extend the hook
+		if (m_oi.armShooterBtn.get()) {
+			m_shooter.engageShooterClutch();
+		}
+
+		// Shoot! (and reload)
+		// Retract the hook
+		if (m_oi.shootBtn.get()){
+			m_shooter.releaseShooterClutch();
+		}	
+
 	}
 
 	/**
@@ -147,7 +163,7 @@ public class Robot extends TimedRobot {
 		}
 
 		SmartDashboard.putNumber("Arm Speed", armLiftVel);
-		positioner.updateMotorSpeed(armLiftVel);
+		m_armController.updateMotorSpeed(armLiftVel);
 	}
 	
 }
