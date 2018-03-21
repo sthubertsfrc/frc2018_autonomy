@@ -26,9 +26,8 @@ public class DriveWheels extends Subsystem {
 	Encoder rightEncoder = new Encoder(2, 3, false, Encoder.EncodingType.k4X);
 	final int encoderPPR = 2048;
 
-	// TODO verify these values
-	final double horizontalWheelBase = 24.0; // in
-	final double wheelDiameter = 8.0; // in 
+	final double horizontalWheelBase = 23.0; // in
+	final double wheelDiameter = 6.0; // in 
 	
 	double forwardSpeed_ips = 0.0;
 	double turningSpeedCCW_rad_per_sec = 0.0;
