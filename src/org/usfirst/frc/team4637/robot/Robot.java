@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4637.robot.commands.ArmShooterSequence;
+import org.usfirst.frc.team4637.robot.commands.DriveToLeftSwitchSequence;
+import org.usfirst.frc.team4637.robot.commands.DriveToRightSwitchSequence;
 import org.usfirst.frc.team4637.robot.commands.EjectBox;
 import org.usfirst.frc.team4637.robot.commands.ExtendHook;
 import org.usfirst.frc.team4637.robot.commands.RaiseArmToLimit;
@@ -56,7 +58,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		m_chooser.addObject("My Auto", new DriveToLeftSwitchSequence());
+		m_chooser.addObject("My Auto", new DriveToRightSwitchSequence());
+		// TODO decide if this is necessary
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
 
@@ -165,17 +169,4 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 	}
-	
-	private void handleArmControl(double armLiftVel, boolean auto_lift_active) {
-		// Handle arm positioning (throttle arm motor based on left joystick Y axis)
-
-		// Check if fast-positioning button is depressed, and override joystick input with maximum speed
-		if (auto_lift_active == true){
-			armLiftVel = 1.0;
-		}
-
-		SmartDashboard.putNumber("Arm Speed", armLiftVel);
-		m_armController.updateMotorSpeed(armLiftVel);
-	}
-	
 }
