@@ -7,6 +7,16 @@
 
 package org.usfirst.frc.team4637.robot;
 
+import org.usfirst.frc.team4637.robot.commands.ArmShooterSequence;
+import org.usfirst.frc.team4637.robot.commands.ClimbWithHook;
+import org.usfirst.frc.team4637.robot.commands.EjectBox;
+import org.usfirst.frc.team4637.robot.commands.ExtendHook;
+import org.usfirst.frc.team4637.robot.commands.RaiseArmToLimit;
+import org.usfirst.frc.team4637.robot.commands.RetractHook;
+import org.usfirst.frc.team4637.robot.commands.Shoot;
+import org.usfirst.frc.team4637.robot.commands.TakeBox;
+import org.usfirst.frc.team4637.robot.commands.TiltGrabber;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -74,4 +84,20 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
+	
+	public OI() {
+		autoRaiseBtn.whenPressed(new RaiseArmToLimit());		
+		armShooterBtn.whenPressed(new ArmShooterSequence());
+		shootBtn.whenPressed(new Shoot());
+		
+		intakeBtn.whileHeld(new TakeBox());
+		ejectBtn.whileHeld(new EjectBox());
+		tiltToGrabBtn.whenPressed(new TiltGrabber(true));
+		tiltToShootBtn.whenPressed(new TiltGrabber(false));
+				
+		extendHookBtn.whenPressed(new ExtendHook());
+		retractHookBtn.whenPressed(new RetractHook());
+		
+		climbWinchBtn.whileHeld(new ClimbWithHook());
+	}
 }

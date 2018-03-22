@@ -159,20 +159,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
-		// TODO move these to commands
-		// Arm shooter
-		// Extend the hook
-		if (m_oi.armShooterBtn.get()) {
-			m_shooter.engageShooterClutch();
-		}
-
-		// Shoot! (and reload)
-		// Retract the hook
-		if (m_oi.shootBtn.get()){
-			m_shooter.releaseShooterClutch();
-		}	
-
 	}
 
 	/**
