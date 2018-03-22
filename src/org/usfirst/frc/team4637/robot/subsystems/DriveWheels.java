@@ -22,38 +22,50 @@ public class DriveWheels extends Subsystem {
 	SpeedControllerGroup rightDrive = new SpeedControllerGroup (frontRight, backRight);
 	DifferentialDrive myDrive = new DifferentialDrive (leftDrive, rightDrive);
 
-	// TODO verify directions
+
 	Encoder leftEncoder = new Encoder(RobotMap.encoderLeftPort1, RobotMap.encoderLeftPort2, false, Encoder.EncodingType.k4X);
 	Encoder rightEncoder = new Encoder(RobotMap.encoderRightPort1, RobotMap.encoderRightPort2, false, Encoder.EncodingType.k4X);
+	
+	// Start of parameters needed by control loop
+	// Change these to tune the controllers performance
 	final int encoderPPR = 2048;
 
 	final double horizontalWheelBase = 23.0; // in
 	final double wheelDiameter = 6.0; // in 
 
-	double forwardSpeed_ips = 0.0;
-	double turningSpeedCCW_rad_per_sec = 0.0;
-
-	double currentAngle = 0.0;
-	double currentPos = 0.0;
-
-	double lastLeftPos = 0.0;
-	double lastRightPos = 0.0;
-
-	double x = 0.0;
-	double y = 0.0;
-
-	double refTotalAngle = 0.0; // CCW positive
-	double refTotalDist = 0.0; // inches
-
-	double initialAngle = 0.0;
-	double initialPos = 0.0;
-
-	double posErr = 0.0;
-	double angleErr = 0.0;
-
 	final double Kp_pos = 0.04;
 	final double Kp_angle = 0.02;
+	double maxLinearVel = 0.25;
+	double maxTurnRate = 0.25;
+	// End of parameters
+	
+	// These variables are all used by the control loop and should not be altered here
+	private double forwardSpeed_ips = 0.0;
+	private double turningSpeedCCW_rad_per_sec = 0.0;
 
+	private double currentAngle = 0.0;
+	private double currentPos = 0.0;
+
+	private double lastLeftPos = 0.0;
+	private double lastRightPos = 0.0;
+
+	private double x = 0.0;
+	private double y = 0.0;
+
+	private double refTotalAngle = 0.0; // CCW positive
+	private double refTotalDist = 0.0; // inches
+
+	private double initialAngle = 0.0;
+	private double initialPos = 0.0;
+
+	private double posErr = 0.0;
+	private double angleErr = 0.0;
+
+	public static double saturateSymmetric(double val, double max)
+	{
+		return (val > max) ? max : ((val < -max) ? -max : val);
+	}
+	
 	public DriveWheels()
 	{
 		super("DriveWheels");
@@ -90,6 +102,11 @@ public class DriveWheels extends Subsystem {
 		// Update incremental X / Y positions based on current angle / movement
 		x += dPos * Math.cos(dAngle);
 		y += dPos * Math.sin(dAngle);
+
+		SmartDashboard.putNumber("X Position", x);
+		SmartDashboard.putNumber("Y Position", y);
+		SmartDashboard.putNumber("Total Displacement", currentPos);
+		SmartDashboard.putNumber("Net Robot Angle", currentAngle);
 	}
 
 	public void resetLocalCsys()
@@ -111,7 +128,13 @@ public class DriveWheels extends Subsystem {
 		double posErr = refTotalDist - (currentPos - initialPos);
 		// TODO handle divide by zero
 		double angleErr = refTotalAngle - (currentAngle - initialAngle);
-		moveOpenLoop(posErr * Kp_pos, angleErr * Kp_angle, false);
+		
+		// Saturate speed inputs at the maximum rates set for the controller
+		// This allows the gains to be higher without causing huge accelerations at the beginning 
+		double ctrlSpeed = saturateSymmetric(posErr * Kp_pos, maxLinearVel);
+		double ctrlTurn = saturateSymmetric(angleErr * Kp_angle, maxTurnRate);
+		
+		moveOpenLoop(ctrlSpeed, ctrlTurn, false);
 	}
 
 	public boolean atTarget(double posTol, double angleTol_deg)
@@ -130,7 +153,7 @@ public class DriveWheels extends Subsystem {
 	public void moveOpenLoop(double driveSpeed, double turnRate, boolean squaredDrive) {
 
 		SmartDashboard.putNumber("Drive Speed", driveSpeed);
-		SmartDashboard.putNumber("Drive Angle", turnRate);
+		SmartDashboard.putNumber("Drive Turn Rate", turnRate);
 
 		myDrive.arcadeDrive(driveSpeed, turnRate, squaredDrive);
 	}
