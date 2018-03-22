@@ -15,10 +15,21 @@ package org.usfirst.frc.team4637.robot;
  */
 public class RobotMap {
 	
-	// Digital In
-	public static int shooterLimitSwitchPort = 1;
+	// TODO map robot winch and add joystick button 
+	// TODO add maximum velocity cap to drive control
+	// TODO read game data
+	// TODO Make chooser handle getting game data only at start of auto
 	
-	public static int armLowerLimitSwitchPort = 8;
+	
+	// Digital In
+	public static int encoderLeftPort1 = 0;
+	public static int encoderLeftPort2 = 1;
+	public static int encoderRightPort1 = 2;
+	public static int encoderRightPort2 = 3;
+
+	public static int shooterLimitSwitchPort = 4;
+	
+	public static int armLowerLimitSwitchPort = 8; // Not used
 	public static int armUpperLimitSwitchPort = 9;
 	
 	// Digital Out
@@ -39,10 +50,13 @@ public class RobotMap {
 	
 	public static int armMotorPort = 4;
 	
-	public static int shooterMotor1Port = 8;
-	public static int shooterMotor2Port = 9;
+	public static int winchMotorPort = 5;
 	
 	public static int grabberRightMotorPort = 6;
 	public static int grabberLeftMotorPort = 7;
+	
+	public static int shooterMotor1Port = 8;
+	public static int shooterMotor2Port = 9;
+	
 
 }

@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team4637.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -14,8 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4637.robot.commands.ArmShooterSequence;
+import org.usfirst.frc.team4637.robot.commands.DriveFixedDistance;
+import org.usfirst.frc.team4637.robot.commands.DriveToSameSideSwitchInner;
 import org.usfirst.frc.team4637.robot.commands.DriveToSameSideSwitchOuter;
-import org.usfirst.frc.team4637.robot.commands.DriveToRightSwitchSequence;
+
+import java.io.Console;
+import java.util.logging.ConsoleHandler;
+
+import org.usfirst.frc.team4637.robot.AutonomousStrategy;
 import org.usfirst.frc.team4637.robot.commands.EjectBox;
 import org.usfirst.frc.team4637.robot.commands.ExtendHook;
 import org.usfirst.frc.team4637.robot.commands.RaiseArmToLimit;
@@ -48,8 +55,8 @@ public class Robot extends TimedRobot {
 	// Control framework for Joystick input
 	public static OI m_oi;
 
-	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	AutonomousStrategy m_autonomousStrategy;
+	SendableChooser<AutonomousStrategy> m_chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -58,12 +65,18 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		m_chooser.addObject("Drive to switch on left side (to end of switch)", new DriveToSameSideSwitchOuter(true));
-		m_chooser.addObject("Drive to switch on left side (side of switch)", new DriveToSameSideSwitchOuter(true));
-		m_chooser.addObject("Drive to switch on right side (to end of switch)", new DriveToSameSideSwitchOuter(false));
-		m_chooser.addObject("Drive to switch on right side (side of switch)", new DriveToSameSideSwitchOuter(false));
-		m_chooser.addObject("My Auto", new DriveToRightSwitchSequence());
-		// TODO decide if this is necessary
+		
+		// NOTE: the "AutonomousStrategy" holds two commands, one if the switch is on the left side, one if the switch is on the right side.
+		
+		m_chooser.addObject("Robot at LEFT: go to switch and score, or go straight",
+				new AutonomousStrategy(new DriveToSameSideSwitchOuter(true), new DriveFixedDistance(268.0)));
+		
+		m_chooser.addObject("Robot at CENTER: go to correct switch and score", 
+				new AutonomousStrategy(new DriveToSameSideSwitchInner(true), new DriveToSameSideSwitchOuter(true)));
+		
+		m_chooser.addObject("Robot at RIGHT: go straight, or go to switch and score",
+				new AutonomousStrategy(new DriveFixedDistance(268.0), new DriveToSameSideSwitchOuter(false)));
+
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
 
@@ -95,18 +108,15 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+		m_autonomousStrategy = m_chooser.getSelected();
+		
+		String gamedata = DriverStation.getInstance().getGameSpecificMessage();
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		if (m_autonomousStrategy != null && !gamedata.isEmpty()) {
+			m_autonomousStrategy.start(gamedata);
+		} else {
+			SmartDashboard.putString("Auto Status", "Can't start autonomous mode, missing command / game data");
 		}
 	}
 
@@ -124,8 +134,8 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (m_autonomousStrategy != null) {
+			m_autonomousStrategy.cancel();
 		}
 		
 		m_oi.autoRaiseBtn.whenPressed(new RaiseArmToLimit());		

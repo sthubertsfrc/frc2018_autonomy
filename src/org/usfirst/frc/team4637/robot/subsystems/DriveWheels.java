@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4637.robot.subsystems;
 
+import org.usfirst.frc.team4637.robot.RobotMap;
 import org.usfirst.frc.team4637.robot.commands.DriveWithJoystick;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -22,8 +23,8 @@ public class DriveWheels extends Subsystem {
 	DifferentialDrive myDrive = new DifferentialDrive (leftDrive, rightDrive);
 
 	// TODO verify directions
-	Encoder leftEncoder = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
-	Encoder rightEncoder = new Encoder(2, 3, false, Encoder.EncodingType.k4X);
+	Encoder leftEncoder = new Encoder(RobotMap.encoderLeftPort1, RobotMap.encoderLeftPort2, false, Encoder.EncodingType.k4X);
+	Encoder rightEncoder = new Encoder(RobotMap.encoderRightPort1, RobotMap.encoderRightPort2, false, Encoder.EncodingType.k4X);
 	final int encoderPPR = 2048;
 
 	final double horizontalWheelBase = 23.0; // in
@@ -88,7 +89,7 @@ public class DriveWheels extends Subsystem {
 
 		// Update incremental X / Y positions based on current angle / movement
 		x += dPos * Math.cos(dAngle);
-		y += dPos * Math.cos(dAngle);
+		y += dPos * Math.sin(dAngle);
 	}
 
 	public void resetLocalCsys()
@@ -125,7 +126,6 @@ public class DriveWheels extends Subsystem {
 		refTotalAngle = totalAngle_deg * Math.PI / 180.0;
 		refTotalDist = totalDist;
 	}
-
 
 	public void moveOpenLoop(double driveSpeed, double turnRate, boolean squaredDrive) {
 
