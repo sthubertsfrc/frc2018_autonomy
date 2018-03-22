@@ -36,6 +36,8 @@ public class OI {
 	Button extendHookBtn = new JoystickButton(rightStick, 2);
 	Button retractHookBtn = new JoystickButton(rightStick, 3);
 	
+	Button climbWinchBtn = new JoystickButton(leftStick, 11);
+	
 	public double getForwardSpeedCmd()
 	{
 		return -rightStick.getY() * 0.9;

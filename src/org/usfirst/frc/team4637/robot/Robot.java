@@ -9,18 +9,15 @@ package org.usfirst.frc.team4637.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4637.robot.commands.ArmShooterSequence;
+import org.usfirst.frc.team4637.robot.commands.ClimbWithHook;
 import org.usfirst.frc.team4637.robot.commands.DriveFixedDistance;
 import org.usfirst.frc.team4637.robot.commands.DriveToSameSideSwitchInner;
 import org.usfirst.frc.team4637.robot.commands.DriveToSameSideSwitchOuter;
-
-import java.io.Console;
-import java.util.logging.ConsoleHandler;
 
 import org.usfirst.frc.team4637.robot.AutonomousStrategy;
 import org.usfirst.frc.team4637.robot.commands.EjectBox;
@@ -149,6 +146,8 @@ public class Robot extends TimedRobot {
 		
 		m_oi.extendHookBtn.whenPressed(new ExtendHook());
 		m_oi.retractHookBtn.whenPressed(new RetractHook());
+		
+		m_oi.climbWinchBtn.whileHeld(new ClimbWithHook());
 		
 		// Right joystick controls drive wheels by default in teleop mode (see default command in DriveWheels.java) 
 		// Left joystick Y axis controls arm angle by default in teleop mode (see default command in ArmController.java)

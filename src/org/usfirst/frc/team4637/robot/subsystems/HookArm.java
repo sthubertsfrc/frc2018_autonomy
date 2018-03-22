@@ -30,7 +30,7 @@ public class HookArm extends Subsystem {
     public void retract()
     {
     	hookSolenoid.set(DoubleSolenoid.Value.kForward);
-    }   
+    }
      
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.

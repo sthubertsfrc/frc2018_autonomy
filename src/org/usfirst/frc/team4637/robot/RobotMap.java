@@ -15,11 +15,7 @@ package org.usfirst.frc.team4637.robot;
  */
 public class RobotMap {
 	
-	// TODO map robot winch and add joystick button 
 	// TODO add maximum velocity cap to drive control
-	// TODO read game data
-	// TODO Make chooser handle getting game data only at start of auto
-	
 	
 	// Digital In
 	public static int encoderLeftPort1 = 0;
