@@ -30,7 +30,8 @@ public class DriveFixedDistance extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return isTimedOut() && Robot.m_driveWheels.atTarget(1.0, 5.0);
+    	// Specify how close to the target position / angle we need to be to stop (in inches and degrees)
+        return isTimedOut() && Robot.m_driveWheels.atTarget(2.0, 2.0);
     }
 
     // Called once after isFinished returns true

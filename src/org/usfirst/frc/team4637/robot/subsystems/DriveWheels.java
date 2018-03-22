@@ -39,10 +39,6 @@ public class DriveWheels extends Subsystem {
 	double maxTurnRate = 0.25;
 	// End of parameters
 	
-	// These variables are all used by the control loop and should not be altered here
-	private double forwardSpeed_ips = 0.0;
-	private double turningSpeedCCW_rad_per_sec = 0.0;
-
 	private double currentAngle = 0.0;
 	private double currentPos = 0.0;
 
@@ -78,12 +74,6 @@ public class DriveWheels extends Subsystem {
 
 	public void updateMeasurements()
 	{
-		double leftVel_ips = leftEncoder.getRate();
-		double rightVel_ips = rightEncoder.getRate();
-
-		forwardSpeed_ips = (leftVel_ips + rightVel_ips) / 2.0;
-		turningSpeedCCW_rad_per_sec = (rightVel_ips - leftVel_ips) / horizontalWheelBase;
-
 		double leftPos = leftEncoder.getDistance();
 		double rightPos = rightEncoder.getDistance();
 
