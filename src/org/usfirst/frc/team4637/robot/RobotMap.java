@@ -15,8 +15,6 @@ package org.usfirst.frc.team4637.robot;
  */
 public class RobotMap {
 	
-	// TODO add maximum velocity cap to drive control
-	
 	// Digital In
 	public static int encoderLeftPort1 = 0;
 	public static int encoderLeftPort2 = 1;
