@@ -16,6 +16,7 @@ public class RaiseArmToLimit extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.m_armController.updateMotorSpeed(1.0);
+    	setTimeout(5.0);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -24,7 +25,7 @@ public class RaiseArmToLimit extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.m_armController.inLimits() != 0;
+        return Robot.m_armController.inLimits() != 0 || isTimedOut();
     }
 
     // Called once after isFinished returns true
