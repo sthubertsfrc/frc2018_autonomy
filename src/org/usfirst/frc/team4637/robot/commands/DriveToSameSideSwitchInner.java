@@ -21,6 +21,6 @@ public class DriveToSameSideSwitchInner extends CommandGroup {
            	addSequential(new DriveFixedDistance(35.0));
            	//addSequential(new LowerArmToEjectPosFromRaised());
            	// Tilt shooter down?
-           	addSequential(new EjectBox());
+           	addSequential(new EjectBox(2.0));
         }
 }

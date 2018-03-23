@@ -20,6 +20,6 @@ public class DriveToSwitchSideFromCenter extends CommandGroup {
        	addSequential(new DriveFixedDistance(62.0));
        	//addSequential(new LowerArmToEjectPosFromRaised());
        	// Tilt shooter down?
-       	addSequential(new EjectBox());
+       	addSequential(new EjectBox(2.0));
     }
 }

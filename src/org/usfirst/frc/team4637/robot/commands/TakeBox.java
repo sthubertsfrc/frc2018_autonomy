@@ -5,11 +5,16 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class TakeBox extends Command {
 
+	double timeout = 0.0;
     public TakeBox() {
         // Use requires() here to declare subsystem dependencies
     	requires(Robot.m_grabber);
     }
-
+    public TakeBox(double timeout_in) {
+    	this();
+    	timeout = timeout_in;
+    }
+    
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.m_grabber.spinMotorsAtSpeed(1.0);
@@ -21,7 +26,7 @@ public class TakeBox extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+		return timeout > 0.0 && isTimedOut();
     }
 
     // Called once after isFinished returns true
