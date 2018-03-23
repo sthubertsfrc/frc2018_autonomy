@@ -14,7 +14,7 @@ public class DriveToSameSideSwitchOuter extends CommandGroup {
     	double sgn = shootFromLeft ? 1.0 : -1.0;
     	// Center of robot starts out at 20 inches out from start
     	// Goal position is rotated toward switch, at the end of the switch
-    	addSequential(new RaiseArmToLimit());
+    	//addSequential(new RaiseArmToLimit());
     	addSequential(new DriveFixedDistance(48.0));
     	addSequential(new DriveRotate(45.0 * sgn));
     	addSequential(new DriveFixedDistance(48.0));
@@ -23,7 +23,7 @@ public class DriveToSameSideSwitchOuter extends CommandGroup {
        	addSequential(new DriveRotate(-90.0 * sgn));
        	// Tilt shooter down?
        	addSequential(new DriveFixedDistance(18.0));
-       	addSequential(new LowerArmToEjectPosFromRaised());
+       	//addSequential(new LowerArmToEjectPosFromRaised());
        	addSequential(new EjectBox());
     }
 }
