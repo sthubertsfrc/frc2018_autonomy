@@ -8,7 +8,6 @@ import org.usfirst.frc.team4637.robot.RobotMap;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 /**
  *
@@ -18,9 +17,6 @@ public class Shooter extends Subsystem {
 	// Two motors used to drive the winch 
 	private PWMTalonSRX shooterTalon1;
 	private PWMTalonSRX shooterTalon2;
-
-	// Controls both winch motors in unison (more convenient interface)
-	private SpeedControllerGroup winch;
 
 	// Winch limit switch (trips when shooter is fully drawn
 	// TODO change to analog input
@@ -35,7 +31,6 @@ public class Shooter extends Subsystem {
 		limitSwitch = new DigitalInput(RobotMap.shooterLimitSwitchPort); 
 		shooterTalon1 = new PWMTalonSRX(RobotMap.shooterMotor1Port);
 		shooterTalon2 = new PWMTalonSRX(RobotMap.shooterMotor2Port);
-		winch = new SpeedControllerGroup(shooterTalon1, shooterTalon2);
 		triggerClutch = new DoubleSolenoid(RobotMap.shooterSolenoidFwPort, RobotMap.shooterSolenoidRevPort);
 	}
 
@@ -48,7 +43,9 @@ public class Shooter extends Subsystem {
 	}
 
 	public void setWinchSpeed(double speed) {
-		winch.set(speed);
+		// Motors spin in opposite directions
+		shooterTalon1.set(speed);
+		shooterTalon2.set(speed);
 	}
 
 	// TODO fix for analog input

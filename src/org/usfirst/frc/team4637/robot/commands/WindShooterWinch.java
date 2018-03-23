@@ -3,13 +3,14 @@ package org.usfirst.frc.team4637.robot.commands;
 import org.usfirst.frc.team4637.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class WindShooterWinch extends Command {
 
-	double winchSpeed = 1.0;
+	double winchSpeed = 0.3;
 	
     public WindShooterWinch() {
         requires(Robot.m_shooter);
@@ -17,6 +18,7 @@ public class WindShooterWinch extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	SmartDashboard.putString("Shooter", "Winding shooter");
     	Robot.m_shooter.setWinchSpeed(winchSpeed); // Don't release the clutch while the motor is spinning (reduce friction on the clutch)
     	setTimeout(10.0); // Don't wind forever
     }
@@ -32,6 +34,7 @@ public class WindShooterWinch extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	SmartDashboard.putString("Shooter", "Arming complete");
     	Robot.m_shooter.setWinchSpeed(0.0);
     }
 
