@@ -8,7 +8,7 @@
 package org.usfirst.frc.team4637.robot;
 
 import org.usfirst.frc.team4637.robot.commands.ArmShooterSequence;
-import org.usfirst.frc.team4637.robot.commands.ClimbWithHook;
+import org.usfirst.frc.team4637.robot.commands.ClimbWithHookAtSpeed;
 import org.usfirst.frc.team4637.robot.commands.EjectBox;
 import org.usfirst.frc.team4637.robot.commands.ExtendHook;
 import org.usfirst.frc.team4637.robot.commands.RaiseArmToLimit;
@@ -46,7 +46,8 @@ public class OI {
 	Button extendHookBtn = new JoystickButton(rightStick, 2);
 	Button retractHookBtn = new JoystickButton(rightStick, 3);
 	
-	Button climbWinchBtn = new JoystickButton(leftStick, 11);
+	Button climbWinchUpBtn = new JoystickButton(leftStick, 11);
+	Button climbWinchDownBtn = new JoystickButton(leftStick, 10);
 	
 	public double getForwardSpeedCmd()
 	{
@@ -98,6 +99,7 @@ public class OI {
 		extendHookBtn.whenPressed(new ExtendHook());
 		retractHookBtn.whenPressed(new RetractHook());
 		
-		climbWinchBtn.whileHeld(new ClimbWithHook());
+		climbWinchUpBtn.whileHeld(new ClimbWithHookAtSpeed(1.0));
+		climbWinchDownBtn.whileHeld(new ClimbWithHookAtSpeed(-0.5));
 	}
 }

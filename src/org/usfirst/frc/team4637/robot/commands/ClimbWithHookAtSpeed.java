@@ -7,17 +7,19 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ClimbWithHook extends Command {
+public class ClimbWithHookAtSpeed extends Command {
 
-    public ClimbWithHook() {
+	double climbSpeed;
+    public ClimbWithHookAtSpeed(double speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.m_hookArm);
+    	climbSpeed = speed;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.m_hookArm.winch.set(1.0);
+    	Robot.m_hookArm.winch.set(climbSpeed);
     }
 
 
@@ -38,6 +40,5 @@ public class ClimbWithHook extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

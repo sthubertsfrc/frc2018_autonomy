@@ -51,6 +51,4 @@ public class RobotMap {
 	
 	public static int shooterMotor1Port = 8;
 	public static int shooterMotor2Port = 9;
-	
-
 }

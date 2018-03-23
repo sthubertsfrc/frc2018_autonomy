@@ -13,20 +13,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team4637.robot.commands.ArmShooterSequence;
-import org.usfirst.frc.team4637.robot.commands.ClimbWithHook;
 import org.usfirst.frc.team4637.robot.commands.DriveFixedDistance;
 import org.usfirst.frc.team4637.robot.commands.DriveToSameSideSwitchInner;
 import org.usfirst.frc.team4637.robot.commands.DriveToSameSideSwitchOuter;
 
 import org.usfirst.frc.team4637.robot.AutonomousStrategy;
-import org.usfirst.frc.team4637.robot.commands.EjectBox;
-import org.usfirst.frc.team4637.robot.commands.ExtendHook;
-import org.usfirst.frc.team4637.robot.commands.RaiseArmToLimit;
-import org.usfirst.frc.team4637.robot.commands.RetractHook;
-import org.usfirst.frc.team4637.robot.commands.Shoot;
-import org.usfirst.frc.team4637.robot.commands.TakeBox;
-import org.usfirst.frc.team4637.robot.commands.TiltGrabber;
 import org.usfirst.frc.team4637.robot.subsystems.ArmController;
 import org.usfirst.frc.team4637.robot.subsystems.DriveWheels;
 import org.usfirst.frc.team4637.robot.subsystems.Grabber;
@@ -134,20 +125,6 @@ public class Robot extends TimedRobot {
 		if (m_autonomousStrategy != null) {
 			m_autonomousStrategy.cancel();
 		}
-		
-		m_oi.autoRaiseBtn.whenPressed(new RaiseArmToLimit());		
-		m_oi.armShooterBtn.whenPressed(new ArmShooterSequence());
-		m_oi.shootBtn.whenPressed(new Shoot());
-		
-		m_oi.intakeBtn.whileHeld(new TakeBox());
-		m_oi.ejectBtn.whileHeld(new EjectBox());
-		m_oi.tiltToGrabBtn.whenPressed(new TiltGrabber(true));
-		m_oi.tiltToShootBtn.whenPressed(new TiltGrabber(false));
-		
-		m_oi.extendHookBtn.whenPressed(new ExtendHook());
-		m_oi.retractHookBtn.whenPressed(new RetractHook());
-		
-		m_oi.climbWinchBtn.whileHeld(new ClimbWithHook());
 		
 		// Right joystick controls drive wheels by default in teleop mode (see default command in DriveWheels.java) 
 		// Left joystick Y axis controls arm angle by default in teleop mode (see default command in ArmController.java)
