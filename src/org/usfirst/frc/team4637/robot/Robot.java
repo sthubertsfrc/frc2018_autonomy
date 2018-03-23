@@ -9,6 +9,7 @@ package org.usfirst.frc.team4637.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
 
 	AutonomousStrategy m_autonomousStrategy;
 	SendableChooser<AutonomousStrategy> m_chooser = new SendableChooser<>();
+	Command m_hardcoded_command = new DriveToSameSideSwitchOuter(true);
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -66,6 +68,7 @@ public class Robot extends TimedRobot {
 				new AutonomousStrategy(new DriveFixedDistance(268.0), new DriveToSameSideSwitchOuter(false)));
 
 		SmartDashboard.putData("Auto mode", m_chooser);
+		SmartDashboard.putData(m_driveWheels);
 	}
 
 	/**
@@ -108,6 +111,8 @@ public class Robot extends TimedRobot {
 		} else {
 			SmartDashboard.putString("Auto Status", "Can't start autonomous mode, missing command / game data");
 		}
+		m_hardcoded_command.start();
+		
 	}
 
 	/**
@@ -126,6 +131,7 @@ public class Robot extends TimedRobot {
 		// this line or comment it out.
 		if (m_autonomousStrategy != null) {
 			m_autonomousStrategy.cancel();
+			m_hardcoded_command.cancel();
 		}
 		
 		// Right joystick controls drive wheels by default in teleop mode (see default command in DriveWheels.java) 
