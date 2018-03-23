@@ -98,7 +98,9 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		m_autonomousStrategy = m_chooser.getSelected();
 		
-		String gamedata = DriverStation.getInstance().getGameSpecificMessage();
+		//String gamedata = DriverStation.getInstance().getGameSpecificMessage();
+		// Temporary for testing on blocks
+		String gamedata = "RLR";
 
 		// schedule the autonomous command (example)
 		if (m_autonomousStrategy != null && !gamedata.isEmpty()) {
