@@ -21,7 +21,7 @@ public class RobotMap {
 	public static int encoderRightPort1 = 2;
 	public static int encoderRightPort2 = 3;
 
-	public static int shooterLimitSwitchPort = 4;
+	public static int shooterLimitSwitchPort = 5;
 	
 	public static int armLowerLimitSwitchPort = 8; // Not used
 	public static int armUpperLimitSwitchPort = 9;
@@ -33,8 +33,8 @@ public class RobotMap {
 	public static int shooterSolenoidFwPort = 2;
 	public static int shooterSolenoidRevPort = 3;
 	
-	public static int hookSolenoidFwdPort = 6;
-	public static int hookSolenoidRevPort = 7;
+	public static int hookSolenoidFwdPort = 4;
+	public static int hookSolenoidRevPort = 6;
 	
 	// PWM out
 	public static int driveMotorRearLeftPort = 0;

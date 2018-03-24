@@ -5,6 +5,7 @@ import org.usfirst.frc.team4637.robot.RobotMap;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -20,16 +21,19 @@ public class HookArm extends Subsystem {
     {
     	hookSolenoid = new DoubleSolenoid(RobotMap.hookSolenoidFwdPort, RobotMap.hookSolenoidRevPort);
     	winch = new Victor(RobotMap.winchMotorPort);
+    	retract();
     }
     
     public void extend()
     {
+    	SmartDashboard.putString("Hook Status:", "Extend");
     	hookSolenoid.set(DoubleSolenoid.Value.kForward);
     }
     
     public void retract()
     {
-    	hookSolenoid.set(DoubleSolenoid.Value.kForward);
+    	SmartDashboard.putString("Hook Status:", "Retract");
+    	hookSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
      
     public void initDefaultCommand() {

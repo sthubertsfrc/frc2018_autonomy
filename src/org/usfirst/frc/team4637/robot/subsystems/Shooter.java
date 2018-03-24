@@ -43,14 +43,14 @@ public class Shooter extends Subsystem {
 	}
 
 	public void setWinchSpeed(double speed) {
-		// Motors spin in opposite directions
-		shooterTalon1.set(speed);
-		shooterTalon2.set(speed);
+		// Motors spin in opposite direction from before
+		shooterTalon1.set(-speed);
+		shooterTalon2.set(-speed);
 	}
 
 	// TODO fix for analog input
 	public boolean atLimitSwitch(){
-		boolean isSwitchPushed = !limitSwitch.get(); // 5V connected to NC so it's true by default, false when switch is closed
+		boolean isSwitchPushed = limitSwitch.get(); // 5V connected to NC so it's true by default, false when switch is closed
 		return isSwitchPushed;
 	}
 

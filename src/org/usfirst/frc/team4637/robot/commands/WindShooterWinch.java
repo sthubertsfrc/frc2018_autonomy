@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class WindShooterWinch extends Command {
 
-	double winchSpeed = 0.3;
+	double winchSpeed = 0.5;
 	
     public WindShooterWinch() {
         requires(Robot.m_shooter);

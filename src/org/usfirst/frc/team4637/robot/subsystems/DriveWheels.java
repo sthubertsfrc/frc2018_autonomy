@@ -28,15 +28,18 @@ public class DriveWheels extends Subsystem {
 	
 	// Start of parameters needed by control loop
 	// Change these to tune the controllers performance
+	// Fixed parameters
 	final int encoderPPR = 2048;
-
 	final double horizontalWheelBase = 23.0; // in
 	final double wheelDiameter = 6.0; // in 
 
-	final double Kp_pos = 0.04;
-	final double Kp_angle = 0.02;
-	double maxLinearVel = 0.25;
-	double maxTurnRate = 0.25;
+	// Controls how sensitive it is
+	final double Kp_pos = 0.2;
+	final double Kp_angle = 3.0;
+	
+	// Controls how fast the robot will go 
+	double maxLinearVel = 0.5;
+	double maxTurnRate = 0.3;
 	// End of parameters
 	
 	private double currentAngle = 0.0;
@@ -74,8 +77,8 @@ public class DriveWheels extends Subsystem {
 
 	public void updateMeasurements()
 	{
-		double leftPos = leftEncoder.getDistance();
-		double rightPos = rightEncoder.getDistance();
+		double leftPos = -leftEncoder.getDistance();
+		double rightPos = -rightEncoder.getDistance();
 
 		double deltaLeft = leftPos - lastLeftPos;
 		double deltaRight = rightPos - lastRightPos;
@@ -83,7 +86,8 @@ public class DriveWheels extends Subsystem {
 		double dPos = (deltaLeft + deltaRight) / 2.0;
 		currentPos += dPos;
 
-		double dAngle = (deltaLeft = deltaRight) / horizontalWheelBase;
+		// Moving the right wheel forward will turn the robot counter-clockwise
+		double dAngle = (deltaRight - deltaLeft) / horizontalWheelBase;
 		currentAngle += dAngle;
 
 		lastLeftPos = leftPos;
@@ -97,6 +101,8 @@ public class DriveWheels extends Subsystem {
 		SmartDashboard.putNumber("Y Position", y);
 		SmartDashboard.putNumber("Total Displacement", currentPos);
 		SmartDashboard.putNumber("Net Robot Angle", currentAngle);
+		SmartDashboard.putNumber("Left Wheels", leftPos);
+		SmartDashboard.putNumber("Right Wheels", rightPos);
 	}
 
 	public void resetLocalCsys()
@@ -115,15 +121,17 @@ public class DriveWheels extends Subsystem {
 	public void doFeedbackLoop()
 	{
 		updateMeasurements();
-		double posErr = refTotalDist - (currentPos - initialPos);
+		posErr = refTotalDist - (currentPos - initialPos);
 		// TODO handle divide by zero
-		double angleErr = refTotalAngle - (currentAngle - initialAngle);
+		angleErr = refTotalAngle - (currentAngle - initialAngle);
 		
 		// Saturate speed inputs at the maximum rates set for the controller
 		// This allows the gains to be higher without causing huge accelerations at the beginning 
 		double ctrlSpeed = saturateSymmetric(posErr * Kp_pos, maxLinearVel);
 		double ctrlTurn = saturateSymmetric(angleErr * Kp_angle, maxTurnRate);
 		
+		SmartDashboard.putNumber("CL Forward Speed", ctrlSpeed);
+		SmartDashboard.putNumber("CL Turn Rate", ctrlTurn);
 		moveOpenLoop(ctrlSpeed, ctrlTurn, false);
 	}
 
@@ -138,13 +146,15 @@ public class DriveWheels extends Subsystem {
 		initialAngle = currentAngle;
 		refTotalAngle = totalAngle_deg * Math.PI / 180.0;
 		refTotalDist = totalDist;
+		SmartDashboard.putNumber("Ref total angle", refTotalAngle);
+		SmartDashboard.putNumber("Ref total dist", refTotalDist);
 	}
 
 	public void moveOpenLoop(double driveSpeed, double turnRate, boolean squaredDrive) {
 
 		SmartDashboard.putNumber("Drive Speed", driveSpeed);
 		SmartDashboard.putNumber("Drive Turn Rate", turnRate);
-
+		
 		myDrive.arcadeDrive(driveSpeed, turnRate, squaredDrive);
 	}
 

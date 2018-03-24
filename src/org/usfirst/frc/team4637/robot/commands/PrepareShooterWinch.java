@@ -37,7 +37,7 @@ public class PrepareShooterWinch extends Command {
     protected void end() {
     	
     	if (!atLimit) {
-    		// Robot.m_shooter.engageShooterClutch();
+    		Robot.m_shooter.engageShooterClutch();
     		SmartDashboard.putString("Shooter", "Clutch engaged");
     	} else {
     		// WARNING motor keeps going, this had better be followed by another command that shuts it down!

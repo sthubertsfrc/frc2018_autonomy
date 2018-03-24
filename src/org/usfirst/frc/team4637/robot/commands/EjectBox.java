@@ -3,6 +3,7 @@ package org.usfirst.frc.team4637.robot.commands;
 import org.usfirst.frc.team4637.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class EjectBox extends Command {
 
@@ -21,7 +22,8 @@ public class EjectBox extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.m_grabber.spinMotorsAtSpeed(-1.0);
+    	SmartDashboard.putString("Drive Sequence", "Eject");
+		Robot.m_grabber.spinMotorsAtSpeed(-0.7);
 		if (timeout > 0.0) {
 			setTimeout(timeout);
 		}

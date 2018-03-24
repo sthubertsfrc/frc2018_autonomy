@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4637.robot.commands.DriveFixedDistance;
 import org.usfirst.frc.team4637.robot.commands.DriveToSameSideSwitchInner;
 import org.usfirst.frc.team4637.robot.commands.DriveToSameSideSwitchOuter;
-
+import org.usfirst.frc.team4637.robot.commands.DriveToSwitchSideFromCenter;
 import org.usfirst.frc.team4637.robot.AutonomousStrategy;
 import org.usfirst.frc.team4637.robot.subsystems.ArmController;
 import org.usfirst.frc.team4637.robot.subsystems.DriveWheels;
@@ -45,8 +45,10 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 
 	AutonomousStrategy m_autonomousStrategy;
-	SendableChooser<AutonomousStrategy> m_chooser = new SendableChooser<>();
-	Command m_hardcoded_command = new DriveToSameSideSwitchOuter(true);
+	//SendableChooser<AutonomousStrategy> m_chooser = new SendableChooser<>();
+	SendableChooser<AutonomousStrategy> m_chooser;
+
+	Command m_hardcoded_command = new DriveFixedDistance(132.0);
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -55,20 +57,21 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		
+		m_chooser = new SendableChooser<>();
+		SmartDashboard.putString("Robot Init", "At init");
 		// NOTE: the "AutonomousStrategy" holds two commands, one if the switch is on the left side, one if the switch is on the right side.
-		
-		m_chooser.addObject("Robot at LEFT: go to switch and score, or go straight",
-				new AutonomousStrategy(new DriveToSameSideSwitchOuter(true), new DriveFixedDistance(268.0)));
+
+		m_chooser.addDefault("Robot at LEFT: go to switch and score, or go straight",
+			new AutonomousStrategy(new DriveToSameSideSwitchOuter(true), new DriveFixedDistance(132.0)));
 		
 		m_chooser.addObject("Robot at CENTER: go to correct switch and score", 
-				new AutonomousStrategy(new DriveToSameSideSwitchInner(true), new DriveToSameSideSwitchOuter(true)));
+				new AutonomousStrategy(new DriveToSwitchSideFromCenter(true), new DriveToSwitchSideFromCenter(false)));
 		
 		m_chooser.addObject("Robot at RIGHT: go straight, or go to switch and score",
-				new AutonomousStrategy(new DriveFixedDistance(268.0), new DriveToSameSideSwitchOuter(false)));
-
+				new AutonomousStrategy(new DriveFixedDistance(132.0), new DriveToSameSideSwitchOuter(false)));
+			
 		SmartDashboard.putData("Auto mode", m_chooser);
-		SmartDashboard.putData(m_driveWheels);
+		SmartDashboard.putString("Robot Init", "At init");
 	}
 
 	/**
@@ -99,6 +102,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		m_driveWheels.resetGlobalCsys();
+		m_driveWheels.resetLocalCsys();
+		SmartDashboard.putString("Init", "start");
 		m_autonomousStrategy = m_chooser.getSelected();
 		
 		//String gamedata = DriverStation.getInstance().getGameSpecificMessage();
@@ -111,6 +117,7 @@ public class Robot extends TimedRobot {
 		} else {
 			SmartDashboard.putString("Auto Status", "Can't start autonomous mode, missing command / game data");
 		}
+		SmartDashboard.putString("Init", "done");
 		m_hardcoded_command.start();
 		
 	}
@@ -144,6 +151,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putBoolean("Shooter Limit Switch", m_shooter.atLimitSwitch());
 	}
 
 	/**
