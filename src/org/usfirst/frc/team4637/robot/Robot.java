@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
 	//SendableChooser<AutonomousStrategy> m_chooser = new SendableChooser<>();
 	SendableChooser<AutonomousStrategy> m_chooser;
 
-	Command m_hardcoded_command = new DriveFixedDistance(132.0);
+	//Command m_hardcoded_command = new DriveFixedDistance(132.0);
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -72,6 +72,7 @@ public class Robot extends TimedRobot {
 			
 		SmartDashboard.putData("Auto mode", m_chooser);
 		SmartDashboard.putString("Robot Init", "At init");
+		SmartDashboard.putString("Fake Gamedata", "RLR");
 	}
 
 	/**
@@ -109,7 +110,7 @@ public class Robot extends TimedRobot {
 		
 		//String gamedata = DriverStation.getInstance().getGameSpecificMessage();
 		// Temporary for testing on blocks
-		String gamedata = "RLR";
+		String gamedata = SmartDashboard.getString("Fake Gamedata", "RLR");
 
 		// schedule the autonomous command (example)
 		if (m_autonomousStrategy != null && !gamedata.isEmpty()) {
@@ -118,8 +119,7 @@ public class Robot extends TimedRobot {
 			SmartDashboard.putString("Auto Status", "Can't start autonomous mode, missing command / game data");
 		}
 		SmartDashboard.putString("Init", "done");
-		m_hardcoded_command.start();
-		
+		//m_hardcoded_command.start();
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class Robot extends TimedRobot {
 		// this line or comment it out.
 		if (m_autonomousStrategy != null) {
 			m_autonomousStrategy.cancel();
-			m_hardcoded_command.cancel();
+			//m_hardcoded_command.cancel();
 		}
 		
 		// Right joystick controls drive wheels by default in teleop mode (see default command in DriveWheels.java) 
