@@ -13,13 +13,13 @@ public class DriveToSwitchSideFromCenter extends CommandGroup {
     	// Center of robot starts out at 20 inches out from start
     	// Goal position is rotated toward switch, at the side of switch closest to the robot's starting position
     	//addSequential(new RaiseArmToLimit());
-    	addSequential(new DriveFixedDistance(24.0));
+    	addSequential(new DriveFixedDistance(48.0));
     	addSequential(new DriveRotate(60.0 * sgn));
-    	addSequential(new DriveFixedDistance(56.0));
+    	addSequential(new DriveFixedDistance(36.0));
        	addSequential(new DriveRotate(-60.0 * sgn));
-       	addSequential(new DriveFixedDistance(62.0));
+       	addSequential(new DriveFixedDistance(24.0));
        	//addSequential(new LowerArmToEjectPosFromRaised());
        	// Tilt shooter down?
-       	addSequential(new EjectBox(2.0));
+       	//addSequential(new EjectBox(2.0));
     }
 }

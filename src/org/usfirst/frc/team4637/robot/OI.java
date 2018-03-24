@@ -100,6 +100,6 @@ public class OI {
 		retractHookBtn.whenPressed(new RetractHook());
 		
 		climbWinchUpBtn.whileHeld(new ClimbWithHookAtSpeed(1.0));
-		climbWinchDownBtn.whileHeld(new ClimbWithHookAtSpeed(-0.5));
+		climbWinchDownBtn.whileHeld(new ClimbWithHookAtSpeed(-1.0));
 	}
 }

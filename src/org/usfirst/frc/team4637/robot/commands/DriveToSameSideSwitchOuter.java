@@ -17,10 +17,10 @@ public class DriveToSameSideSwitchOuter extends CommandGroup {
     	// Goal position is rotated toward switch, at the end of the switch
     	//addSequential(new RaiseArmToLimit());
     	
-    	addSequential(new DriveFixedDistance(96.0));
-    	addSequential(new DriveRotate(-90.0 * sgn));
-    	addSequential(new TiltGrabber(true));
-    	addSequential(new DriveFixedDistance(36.0));
+    	addSequential(new DriveFixedDistance(60.0));
+    	//addSequential(new DriveRotate(-90.0 * sgn));
+    	//addSequential(new TiltGrabber(true));
+    	//addSequential(new DriveFixedDistance(36.0));
        	//addSequential(new DriveRotate(-45.0 * sgn));
        	
        	//addSequential(new DriveFixedDistance(20.0));
@@ -31,6 +31,6 @@ public class DriveToSameSideSwitchOuter extends CommandGroup {
        	//addSequential(new DriveFixedDistance(18.0));
        	//addSequential(new LowerArmToEjectPosFromRaised());
        	
-       	addSequential(new EjectBox(2.0));
+       	//addSequential(new EjectBox(2.0));
     }
 }

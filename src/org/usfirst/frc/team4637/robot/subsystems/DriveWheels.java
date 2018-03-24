@@ -35,7 +35,7 @@ public class DriveWheels extends Subsystem {
 
 	// Controls how sensitive it is
 	final double Kp_pos = 0.2;
-	final double Kp_angle = 3.0;
+	final double Kp_angle = 0.0;
 	
 	// Controls how fast the robot will go 
 	double maxLinearVel = 0.5;
@@ -109,6 +109,12 @@ public class DriveWheels extends Subsystem {
 	{
 		currentPos = 0.0;
 		currentAngle = 0.0;
+		initialAngle = 0.0;
+		initialPos = 0.0;
+		lastLeftPos = 0.0;
+		lastRightPos = 0.0;
+		posErr = 0.0;
+		angleErr = 0.0;
 		x = 0.0;
 		y = 0.0;
 		leftEncoder.reset();
@@ -130,7 +136,7 @@ public class DriveWheels extends Subsystem {
 		
 		SmartDashboard.putNumber("CL Forward Speed", ctrlSpeed);
 		SmartDashboard.putNumber("CL Turn Rate", ctrlTurn);
-		moveOpenLoop(ctrlSpeed, ctrlTurn, false);
+		moveOpenLoop(ctrlSpeed, -ctrlTurn, false);
 	}
 
 	public boolean atTarget(double posTol, double angleTol_deg)

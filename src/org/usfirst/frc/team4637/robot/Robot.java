@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
 		// NOTE: the "AutonomousStrategy" holds two commands, one if the switch is on the left side, one if the switch is on the right side.
 
 		// Controls how far the robot drives when the switch is on the opposite side (inch)
-		double driveStraightDist = 132.0;
+		double driveStraightDist = 60.0;
 		
 		m_chooser.addDefault("Robot at LEFT: go to switch and score, or go straight",
 			new AutonomousStrategy(new DriveToSameSideSwitchOuter(true), new DriveFixedDistance(driveStraightDist)));
@@ -110,9 +110,12 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putString("Init", "start");
 		m_autonomousStrategy = m_chooser.getSelected();
 		
-		//String gamedata = DriverStation.getInstance().getGameSpecificMessage();
+		// Uncomment this during game
+		String gamedata = DriverStation.getInstance().getGameSpecificMessage();
+		
 		// Temporary for testing on blocks
-		String gamedata = SmartDashboard.getString("Fake Gamedata", "RLR");
+		// Comment this during game
+		//String gamedata = SmartDashboard.getString("Fake Gamedata", "RLR");
 
 		// schedule the autonomous command (example)
 		if (m_autonomousStrategy != null && !gamedata.isEmpty()) {
