@@ -61,14 +61,17 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putString("Robot Init", "At init");
 		// NOTE: the "AutonomousStrategy" holds two commands, one if the switch is on the left side, one if the switch is on the right side.
 
+		// Controls how far the robot drives when the switch is on the opposite side (inch)
+		double driveStraightDist = 132.0;
+		
 		m_chooser.addDefault("Robot at LEFT: go to switch and score, or go straight",
-			new AutonomousStrategy(new DriveToSameSideSwitchOuter(true), new DriveFixedDistance(132.0)));
+			new AutonomousStrategy(new DriveToSameSideSwitchOuter(true), new DriveFixedDistance(driveStraightDist)));
 		
 		m_chooser.addObject("Robot at CENTER: go to correct switch and score", 
 				new AutonomousStrategy(new DriveToSwitchSideFromCenter(true), new DriveToSwitchSideFromCenter(false)));
 		
 		m_chooser.addObject("Robot at RIGHT: go straight, or go to switch and score",
-				new AutonomousStrategy(new DriveFixedDistance(132.0), new DriveToSameSideSwitchOuter(false)));
+				new AutonomousStrategy(new DriveFixedDistance(driveStraightDist), new DriveToSameSideSwitchOuter(false)));
 			
 		SmartDashboard.putData("Auto mode", m_chooser);
 		SmartDashboard.putString("Robot Init", "At init");
@@ -103,8 +106,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_driveWheels.resetGlobalCsys();
-		m_driveWheels.resetLocalCsys();
+		m_driveWheels.resetCoordinates();
 		SmartDashboard.putString("Init", "start");
 		m_autonomousStrategy = m_chooser.getSelected();
 		

@@ -104,17 +104,15 @@ public class DriveWheels extends Subsystem {
 		SmartDashboard.putNumber("Left Wheels", leftPos);
 		SmartDashboard.putNumber("Right Wheels", rightPos);
 	}
-
-	public void resetLocalCsys()
+	
+	public void resetCoordinates()
 	{
 		currentPos = 0.0;
 		currentAngle = 0.0;
-	}
-
-	public void resetGlobalCsys()
-	{
 		x = 0.0;
 		y = 0.0;
+		leftEncoder.reset();
+		rightEncoder.reset();
 	}
 
 	// This should be called periodically to do feedback control
